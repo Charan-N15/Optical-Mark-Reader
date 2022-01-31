@@ -3,7 +3,7 @@ import java.io.File;
 
 public class OpticalMarkReaderMain {
 
-    //EDIT 1
+    //EDIT
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
         System.out.println("Loading pdf at " + pathToPdf);
