@@ -9,9 +9,9 @@ public class FilterTest {
     public static String currentFolder = System.getProperty("user.dir") + "/";
 
     public static void main(String[] args) {
-        // SaveAndDisplayExample();
+         SaveAndDisplayExample();
 
-        RunTheFilter();
+        //RunTheFilter();
     }
 
     private static void RunTheFilter() {
