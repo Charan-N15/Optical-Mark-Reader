@@ -11,6 +11,7 @@ public class FilterTest {
     public static void main(String[] args) {
         SaveAndDisplayExample();
         RunTheFilter();
+        OpticalMarkReaderMain.getLength();
 
     }
 
@@ -18,6 +19,8 @@ public class FilterTest {
         System.out.println("Loading pdf....");
         PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
         DImage img = new DImage(in);       // you can make a DImage from a PImage
+
+
 
 
 
@@ -31,6 +34,7 @@ public class FilterTest {
     private static void SaveAndDisplayExample() {
         PImage img = PDFHelper.getPageImage("assets/omrtest.pdf",1);
         img.save(currentFolder + "assets/page1.png");
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
 
         DisplayWindow.showFor("assets/page1.png");
     }

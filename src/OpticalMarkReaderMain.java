@@ -13,15 +13,6 @@ public class OpticalMarkReaderMain {
         System.out.println("Loading pdf at " + pathToPdf);
 
 
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
-        DImage img = new DImage(in);
-        short[][] grid = img.getBWPixelGrid();
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                grid[r][c] = 0;
-            }
-        }
-
         /*
         Your code here to...
         (1).  Load the pdf
@@ -30,6 +21,19 @@ public class OpticalMarkReaderMain {
         (4).  Output 2 csv files
          */
 
+
+    }
+
+    public static void getLength(){
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
+        DImage img = new DImage(in);
+        short[][] grid = img.getBWPixelGrid();
+        for (int r = 400; r < 600; r++) {
+            for (int c = 450; c < 490; c++) {
+
+            }
+        }
+        System.out.println(grid.length);
 
     }
 
