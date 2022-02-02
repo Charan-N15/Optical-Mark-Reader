@@ -28,8 +28,13 @@ public class OpticalMarkReaderMain {
         PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
         DImage img = new DImage(in);
         short[][] grid = img.getBWPixelGrid();
-        for (int r = 400; r < 600; r++) {
-            for (int c = 450; c < 490; c++) {
+        int length = 490;
+        for (int r = 450; r < length; r++) { //rows between each question is ~34 pixels
+            for (int c = 427; c < 600; c++) {
+                for (int i = r; i < length ; i = i + r / 5) {
+                    if(grid[r][c] > 1);
+                }
+
 
             }
         }
