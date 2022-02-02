@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.io.File;
 
+// Author: David Dobervich (this is my edit)
+// ANOTHER EDIT.
 public class OpticalMarkReaderMain {
 
     //EDIT
