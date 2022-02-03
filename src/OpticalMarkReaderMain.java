@@ -43,11 +43,12 @@ public class OpticalMarkReaderMain {
         for (int i = 1; i <= 5; i++) {
             for (int r = 464; r < 487; r++) {
                 for (int c = 408 + ((i - 1) * 38); c < 408 + (i * 38); c++) {
-                    if (grid[r][c] < 150) blackCount++;
+                    if (grid[r][c] < 100) blackCount++;
 
                 }
             }
-            if (blackCount > prevBlackCount) ans = count;
+            System.out.println(blackCount + " : " + i);
+            if (blackCount > prevBlackCount) ans = i;
             prevBlackCount = blackCount;
             blackCount = 0;
             count++;

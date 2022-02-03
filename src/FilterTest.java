@@ -9,7 +9,7 @@ import core.DisplayWindow;
 import processing.core.PApplet;
 import processing.core.PImage;
 
-public class FilterTest implements Drawable {
+public class FilterTest{
     public static String currentFolder = System.getProperty("user.dir") + "/";
 
     public static void main(String[] args) {
@@ -44,8 +44,5 @@ public class FilterTest implements Drawable {
 
     }
 
-    @Override
-    public void drawOverlay(PApplet window, DImage original, DImage filtered) {
-//        DisplayWindow.showFor(window.ellipse(500,500,100,100));
-    }
+
 }
