@@ -29,29 +29,26 @@ public class OpticalMarkReaderMain {
         DImage img = new DImage(in);
         short[][] grid = img.getBWPixelGrid();
 
-        int length = 608;
+
         int count = 1;
         int blackCount = 0;
-        int whiteCount = 0;
         int prevBlackCount = 0;
         int ans = -1;
 
 
         //rows start at 455 and end at 490
         //columns start at 408 and end at 608
-        //dist between each choise is 38 pixels.
+        //dist between each choice is 38 pixels.
 
         for (int i = 1; i <= 5; i++) {
-            for (int r = 455; r < 490; r++) { //rows between each question is ~34 pixels
+            for (int r = 464; r < 487; r++) {
                 for (int c = 408 + ((i - 1) * 38); c < 408 + (i * 38); c++) {
-                    if (grid[r][c] > 150) whiteCount++;
                     if (grid[r][c] < 150) blackCount++;
-                    if (blackCount > prevBlackCount) ans = count;
 
                 }
             }
+            if (blackCount > prevBlackCount) ans = count;
             prevBlackCount = blackCount;
-            whiteCount = 0;
             blackCount = 0;
             count++;
         }

@@ -1,11 +1,15 @@
 import FileIO.PDFHelper;
 import Filters.DisplayInfoFilter;
+import Filters.FixedThresholdFilter;
+import Interfaces.Drawable;
 import Interfaces.PixelFilter;
+import com.jogamp.newt.Display;
 import core.DImage;
 import core.DisplayWindow;
+import processing.core.PApplet;
 import processing.core.PImage;
 
-public class FilterTest {
+public class FilterTest implements Drawable {
     public static String currentFolder = System.getProperty("user.dir") + "/";
 
     public static void main(String[] args) {
@@ -37,5 +41,11 @@ public class FilterTest {
         PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
 
         DisplayWindow.showFor("assets/page1.png");
+
+    }
+
+    @Override
+    public void drawOverlay(PApplet window, DImage original, DImage filtered) {
+//        DisplayWindow.showFor(window.ellipse(500,500,100,100));
     }
 }
