@@ -32,7 +32,7 @@ public class OpticalMarkReaderMain {
 
         int count = 1;
         int blackCount = 0;
-        int prevBlackCount = 0;
+        int biggestPrevValue = 0;
         int ans = -1;
 
 
@@ -47,9 +47,8 @@ public class OpticalMarkReaderMain {
 
                 }
             }
-            System.out.println(blackCount + " : " + i);
-            if (blackCount > prevBlackCount) ans = i;
-            prevBlackCount = blackCount;
+            if (blackCount > biggestPrevValue) ans = count;
+            biggestPrevValue = Math.max(blackCount,biggestPrevValue);
             blackCount = 0;
             count++;
         }
