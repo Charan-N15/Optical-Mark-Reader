@@ -24,8 +24,8 @@ public class OpticalMarkReaderMain {
 
     }
 
-    public static void getLength(){
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
+    public static void printAns() {
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
         DImage img = new DImage(in);
         short[][] grid = img.getBWPixelGrid();
 
@@ -35,25 +35,28 @@ public class OpticalMarkReaderMain {
         int whiteCount = 0;
         int prevBlackCount = 0;
         int ans = -1;
-        for (int r = 455; r < 490; r++) { //rows between each question is ~34 pixels
-            for (int c = 400; c < length; c++) {
-                for (int i = c; i <  c + (42 * count); i = i + 41) {
-                    if(grid[r][i] > 100) whiteCount++;
-                    if(grid[r][i] < 100) blackCount++;
-                    if(blackCount > prevBlackCount) ans = count;
 
 
-                    prevBlackCount = blackCount;
+        //rows start at 455 and end at 490
+        //columns start at 400 and end at 608
+        //dist between each choise is 41 pixels.
 
-
+        for (int i = 1; i <= 5; i++) {
+            for (int r = 455; r < 490; r++) { //rows between each question is ~34 pixels
+                for (int c = 400 + ((i - 1) * 41); c < 400 + (i * 41); c++) {
+                    if (grid[r][i] > 100) whiteCount++;
+                    if (grid[r][i] < 100) blackCount++;
+                    if (blackCount > prevBlackCount) ans = count;
+                    System.out.println(count);
                 }
-                whiteCount = 0;
-                blackCount = 0;
-                count++;
             }
+            prevBlackCount = blackCount;
+            whiteCount = 0;
+            blackCount = 0;
+            count++;
         }
-        System.out.println(ans);
 
+        System.out.println(ans);
     }
 
 
