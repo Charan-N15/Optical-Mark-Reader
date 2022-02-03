@@ -28,17 +28,31 @@ public class OpticalMarkReaderMain {
         PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
         DImage img = new DImage(in);
         short[][] grid = img.getBWPixelGrid();
-        int length = 490;
-        for (int r = 450; r < length; r++) { //rows between each question is ~34 pixels
-            for (int c = 427; c < 600; c++) {
-                for (int i = r; i < length ; i = i + r / 5) {
-                    if(grid[r][c] > 1);
+
+        int length = 608;
+        int count = 1;
+        int blackCount = 0;
+        int whiteCount = 0;
+        int prevBlackCount = 0;
+        int ans = -1;
+        for (int r = 455; r < 490; r++) { //rows between each question is ~34 pixels
+            for (int c = 400; c < length; c++) {
+                for (int i = c; i <  c + (42 * count); i = i + 41) {
+                    if(grid[r][i] > 100) whiteCount++;
+                    if(grid[r][i] < 100) blackCount++;
+                    if(blackCount > prevBlackCount) ans = count;
+
+
+                    prevBlackCount = blackCount;
+
+
                 }
-
-
+                whiteCount = 0;
+                blackCount = 0;
+                count++;
             }
         }
-        System.out.println(grid.length);
+        System.out.println(ans);
 
     }
 
