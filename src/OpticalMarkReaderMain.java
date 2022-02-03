@@ -44,10 +44,10 @@ public class OpticalMarkReaderMain {
         for (int i = 1; i <= 5; i++) {
             for (int r = 455; r < 490; r++) { //rows between each question is ~34 pixels
                 for (int c = 400 + ((i - 1) * 41); c < 400 + (i * 41); c++) {
-                    if (grid[r][i] > 100) whiteCount++;
-                    if (grid[r][i] < 100) blackCount++;
+                    if (grid[r][c] > 100) whiteCount++;
+                    if (grid[r][c] < 100) blackCount++;
                     if (blackCount > prevBlackCount) ans = count;
-                    System.out.println(count);
+
                 }
             }
             prevBlackCount = blackCount;
