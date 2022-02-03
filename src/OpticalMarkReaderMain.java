@@ -39,19 +39,23 @@ public class OpticalMarkReaderMain {
         //rows start at 455 and end at 490
         //columns start at 408 and end at 608
         //dist between each choice is 38 pixels.
+        for (int j = 1; j < 17; j++) { //problems
+            for (int i = 1; i <= 5; i++) { //multiple choice
+                for (int r = 464; r < 487; r++) {
+                    for (int c = 408 + ((i - 1) * 38); c < 408 + (i * 38); c++) {
+                        if (grid[r][c] < 100) blackCount++;
 
-        for (int i = 1; i <= 5; i++) {
-            for (int r = 464; r < 487; r++) {
-                for (int c = 408 + ((i - 1) * 38); c < 408 + (i * 38); c++) {
-                    if (grid[r][c] < 100) blackCount++;
-
+                    }
                 }
+                if (blackCount > biggestPrevValue) ans = count;
+                biggestPrevValue = Math.max(blackCount,biggestPrevValue);
+                blackCount = 0;
+                count++;
             }
-            if (blackCount > biggestPrevValue) ans = count;
-            biggestPrevValue = Math.max(blackCount,biggestPrevValue);
-            blackCount = 0;
-            count++;
+
         }
+
+
 
         System.out.println(ans);
     }
