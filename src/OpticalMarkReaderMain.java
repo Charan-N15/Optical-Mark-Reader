@@ -83,11 +83,11 @@ public class OpticalMarkReaderMain {
         //columns start at 408 and end at 608
         //dist between each choice is 38 pixels.
         // rows now start at 456 and go to 493 (37 pixels).
-        for (int n = 408; n <= 702; n += 294) {
-            for (int j = 1; j < 17; j++) { //problems
+        for (int n = 114; n <= 996; n += 294) {
+            for (int j = 1; j <= 25; j++) { //problems
                 for (int i = 1; i <= 5; i++) { //multiple choice
                     for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-                        for (int c = 408 + ((i - 1) * 38); c < 408 + (i * 38); c++) {
+                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
                             if (grid[r][c] < 100) blackCount++;
 
                         }
