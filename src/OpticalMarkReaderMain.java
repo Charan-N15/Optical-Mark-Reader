@@ -4,6 +4,7 @@ import processing.core.PImage;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.Arrays;
 
 // Author: David Dobervich (this is my edit)
 public class OpticalMarkReaderMain {
@@ -77,7 +78,7 @@ public class OpticalMarkReaderMain {
         int count2 = 1;
 
         //array to store answers:
-        String[] answers = new String[100];
+        String[] answers = new String[101];
 
 
         //rows start at 455 and end at 490
@@ -99,8 +100,7 @@ public class OpticalMarkReaderMain {
                     count++;
 
                 }
-                System.out.println(ans);
-//                System.out.println(count2);
+                System.out.println(count2 + ": " + ans);
                 if (ans == 1) answers[count2] = "A";
                 if (ans == 2) answers[count2] = "B";
                 if (ans == 3) answers[count2] = "C";
@@ -113,10 +113,14 @@ public class OpticalMarkReaderMain {
 
             }
         }
+        System.out.println(Arrays.toString(answers));
         return answers;
     }
 
+
+
     public static void writeDataToFile(String filePath, String[] answers) {
+
         try (FileWriter f = new FileWriter(filePath);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
