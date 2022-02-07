@@ -25,92 +25,61 @@ public class OpticalMarkReaderMain {
 
     }
 
-//    public static void printAns() {
-//        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
-//        DImage img = new DImage(in);
-//        short[][] grid = img.getBWPixelGrid();
-//
-//
-//        int count = 1;
-//        int blackCount = 0;
-//        int biggestPrevValue = 0;
-//        int ans = -1;
-//
-//
-//        //rows start at 455 and end at 490
-//        //columns start at 408 and end at 608
-//        //dist between each choice is 38 pixels.
-//        // rows now start at 456 and go to 493 (37 pixels).
-//        for (int n = 114; n <=996 ; n+=294) { //original values are 408 and 702, columns of answers
-//            for (int j = 1; j <= 25; j++) { //problems
-//                for (int i = 1; i <= 5; i++) { //multiple choice
-//                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-//                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
-//                            if (grid[r][c] < 100) blackCount++;
-//
-//                        }
-//                    }
-//                    if (blackCount > biggestPrevValue) ans = count;
-//                    biggestPrevValue = Math.max(blackCount,biggestPrevValue);
-//                    blackCount = 0;
-//                    count++;
-//
-//                }
-//
-//                biggestPrevValue = 0;
-//                count = 1;
-//                ans = -1;
-//
-//            }
-//        }
-//    }
+
 
     public static String[] getAnsArray() {
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
-        DImage img = new DImage(in);
-        short[][] grid = img.getBWPixelGrid();
+        short[][] grid; /*
 
 
-        int count = 1;
-        int blackCount = 0;
-        int biggestPrevValue = 0;
-        int ans = -1;
-        int count2 = 1;
 
-        //array to store answers:
+
+
+        make this an array list
+       */
         String[] answers = new String[101];
+        for (int pg = 1; pg <= 7; pg++) {
+            PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", pg);
+            DImage img = new DImage(in);
+            grid = img.getBWPixelGrid();
+            int count = 1;
+            int blackCount = 0;
+            int biggestPrevValue = 0;
+            int ans = -1;
+            int count2 = 1;
 
+            //array to store answers:
 
-        //rows start at 455 and end at 490
-        //columns start at 408 and end at 608
-        //dist between each choice is 38 pixels.
-        // rows now start at 456 and go to 493 (37 pixels).
-        for (int n = 114; n <= 996; n += 294) {
-            for (int j = 1; j <= 25; j++) { //problems
-                for (int i = 1; i <= 5; i++) { //multiple choice
-                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
-                            if (grid[r][c] < 100) blackCount++;
+            //rows start at 455 and end at 490
+            //columns start at 408 and end at 608
+            //dist between each choice is 38 pixels.
+            // rows now start at 456 and go to 493 (37 pixels).
+            for (int n = 114; n <= 996; n += 294) {
+                for (int j = 1; j <= 25; j++) { //problems
+                    for (int i = 1; i <= 5; i++) { //multiple choice
+                        for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
+                            for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
+                                if (grid[r][c] < 100) blackCount++;
 
+                            }
                         }
+                        if (blackCount > biggestPrevValue) ans = count;
+                        biggestPrevValue = Math.max(blackCount, biggestPrevValue);
+                        blackCount = 0;
+                        count++;
+
                     }
-                    if (blackCount > biggestPrevValue) ans = count;
-                    biggestPrevValue = Math.max(blackCount, biggestPrevValue);
-                    blackCount = 0;
-                    count++;
+                    System.out.println(count2 + ": " + ans);
+                    if (ans == 1) answers[count2] = "A";
+                    if (ans == 2) answers[count2] = "B";
+                    if (ans == 3) answers[count2] = "C";
+                    if (ans == 4) answers[count2] = "D";
+                    if (ans == 5) answers[count2] = "E";
+                    biggestPrevValue = 0;
+                    count = 1;
+                    ans = -1;
+                    count2++;
 
                 }
-                System.out.println(count2 + ": " + ans);
-                if (ans == 1) answers[count2] = "A";
-                if (ans == 2) answers[count2] = "B";
-                if (ans == 3) answers[count2] = "C";
-                if (ans == 4) answers[count2] = "D";
-                if (ans == 5) answers[count2] = "E";
-                biggestPrevValue = 0;
-                count = 1;
-                ans = -1;
-                count2++;
-
             }
         }
         System.out.println(Arrays.toString(answers));
