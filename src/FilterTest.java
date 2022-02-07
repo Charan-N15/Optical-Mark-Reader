@@ -15,7 +15,7 @@ public class FilterTest{
     public static void main(String[] args) {
         SaveAndDisplayExample();
         RunTheFilter();
-        OpticalMarkReaderMain.printAns();
+        OpticalMarkReaderMain.getAnsArray();
         OpticalMarkReaderMain.writeDataToFile("src/MyFile.txt", OpticalMarkReaderMain.getAnsArray());
 
 
