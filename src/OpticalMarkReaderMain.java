@@ -11,28 +11,30 @@ import java.util.Arrays;
 public class OpticalMarkReaderMain {
 
     public static void main(String[] args) {
-        String pathToPdf = fileChooser();
-        System.out.println("Loading pdf at " + pathToPdf);
+
+//        String pathToPdf = fileChooser();
+//        System.out.println("Loading pdf at " + pathToPdf);
 //        Student s = new Student();
 
-        ArrayList<ArrayList> students = new ArrayList<>();
-        students.add(getStudentArray(2));
-        students.add(getStudentArray(3));
-        students.add(getStudentArray(4));
-        students.add(getStudentArray(5));
-        students.add(getStudentArray(6));
-        students.add(getStudentArray(7));
-
-        int page = 2;
-        ArrayList<ArrayList> answers = new ArrayList<>();
-        for (int i = 0; i < students.size(); i++) {
-            answers.add(crossCheck(getAnsArray(),students.get(i),page));
-            page++;
-        }
-
-        for (int i = 0; i < answers.size(); i++) {
-            writeDataToFile("src/MyFile.txt",answers.get(i));
-        }
+//
+//        ArrayList<ArrayList> students = new ArrayList<>();
+//        students.add(getStudentArray(2));
+//        students.add(getStudentArray(3));
+//        students.add(getStudentArray(4));
+//        students.add(getStudentArray(5));
+//        students.add(getStudentArray(6));
+//        students.add(getStudentArray(7));
+//
+//        int page = 2;
+//        ArrayList<ArrayList> answers = new ArrayList<>();
+//        for (int i = 0; i < students.size(); i++) {
+//            answers.add(crossCheck(getAnsArray(),students.get(i),page));
+//            page++;
+//        }
+//
+//        for (int i = 0; i < answers.size(); i++) {
+//            writeDataToFile("src/MyFile.txt",answers.get(i));
+//        }
 
 
 
@@ -154,9 +156,9 @@ public class OpticalMarkReaderMain {
              PrintWriter writer = new PrintWriter(b);) {
 
             for (int i = 0; i < answers.size(); i++) {
-                writer.println((i + 1) + ": " + answers.get(i));
+                writer.print((i + 1) + ": " + answers.get(i));
             }
-            writer.println();
+
 
 
         } catch (IOException error) {
