@@ -17,24 +17,23 @@ public class OpticalMarkReaderMain {
 //        Student s = new Student();
 
 //
-//        ArrayList<ArrayList> students = new ArrayList<>();
-//        students.add(getStudentArray(2));
-//        students.add(getStudentArray(3));
-//        students.add(getStudentArray(4));
-//        students.add(getStudentArray(5));
-//        students.add(getStudentArray(6));
-//        students.add(getStudentArray(7));
-//
-//        int page = 2;
-//        ArrayList<ArrayList> answers = new ArrayList<>();
-//        for (int i = 0; i < students.size(); i++) {
-//            answers.add(crossCheck(getAnsArray(),students.get(i),page));
-//            page++;
-//        }
-//
-//        for (int i = 0; i < answers.size(); i++) {
-//            writeDataToFile("src/MyFile.txt",answers.get(i));
-//        }
+        ArrayList<ArrayList> students = new ArrayList<>();
+        students.add(getStudentArray(2));
+        students.add(getStudentArray(3));
+        students.add(getStudentArray(4));
+        students.add(getStudentArray(5));
+        students.add(getStudentArray(6));
+
+        int page = 2;
+        ArrayList<ArrayList> answers = new ArrayList<>();
+        for (int i = 0; i < students.size(); i++) {
+            answers.add(crossCheck(getAnsArray(),students.get(i),page));
+            page++;
+        }
+
+        for (int i = 0; i < answers.size(); i++) {
+            writeDataToFile("src/MyFile.txt",answers.get(i));
+        }
 
 
 
@@ -151,13 +150,14 @@ public class OpticalMarkReaderMain {
 
     public static void writeDataToFile(String filePath, ArrayList<String> answers) {
 
-        try (FileWriter f = new FileWriter(filePath);
+        try (FileWriter f = new FileWriter(filePath, true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
 
             for (int i = 0; i < answers.size(); i++) {
-                writer.print((i + 1) + ": " + answers.get(i));
+                writer.println((i + 1) + ": " + answers.get(i));
             }
+            writer.println();
 
 
 
