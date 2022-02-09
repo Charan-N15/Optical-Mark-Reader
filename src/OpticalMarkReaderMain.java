@@ -4,6 +4,7 @@ import processing.core.PImage;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 // Author: David Dobervich (this is my edit)
@@ -12,6 +13,30 @@ public class OpticalMarkReaderMain {
     public static void main(String[] args) {
         String pathToPdf = fileChooser();
         System.out.println("Loading pdf at " + pathToPdf);
+//        Student s = new Student();
+
+        ArrayList<ArrayList> students = new ArrayList<>();
+        students.add(getStudentArray(2));
+        students.add(getStudentArray(3));
+        students.add(getStudentArray(4));
+        students.add(getStudentArray(5));
+        students.add(getStudentArray(6));
+        students.add(getStudentArray(7));
+
+        int page = 2;
+        ArrayList<ArrayList> answers = new ArrayList<>();
+        for (int i = 0; i < students.size(); i++) {
+            answers.add(crossCheck(getAnsArray(),students.get(i),page));
+            page++;
+        }
+
+        for (int i = 0; i < answers.size(); i++) {
+            writeDataToFile("src/MyFile.txt",answers.get(i));
+        }
+
+
+
+
 
 
         /*
@@ -21,82 +46,117 @@ public class OpticalMarkReaderMain {
         (3).  Create a DImage from each page and process its pixels
         (4).  Output 2 csv files
          */
-
-
     }
 
 
+    public static ArrayList<String> getAnsArray() {
+        short[][] grid;
+        ArrayList<String> answers = new ArrayList<>();
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
+        DImage img = new DImage(in);
+        grid = img.getBWPixelGrid();
+        int count = 1;
+        int blackCount = 0;
+        int biggestPrevValue = 0;
+        int ans = -1;
 
-    public static String[] getAnsArray() {
-        short[][] grid; /*
-
-
-
-
-
-        make this an array list
-       */
-        String[] answers = new String[101];
-        for (int pg = 1; pg <= 7; pg++) {
-            PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", pg);
-            DImage img = new DImage(in);
-            grid = img.getBWPixelGrid();
-            int count = 1;
-            int blackCount = 0;
-            int biggestPrevValue = 0;
-            int ans = -1;
-            int count2 = 1;
-
-            //array to store answers:
-
-            //rows start at 455 and end at 490
-            //columns start at 408 and end at 608
-            //dist between each choice is 38 pixels.
-            // rows now start at 456 and go to 493 (37 pixels).
-            for (int n = 114; n <= 996; n += 294) {
-                for (int j = 1; j <= 25; j++) { //problems
-                    for (int i = 1; i <= 5; i++) { //multiple choice
-                        for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-                            for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
-                                if (grid[r][c] < 100) blackCount++;
-
-                            }
+        //rows start at 455 and end at 490
+        //columns start at 408 and end at 608
+        //dist between each choice is 38 pixels.
+        // rows now start at 456 and go to 493 (37 pixels).
+        for (int n = 114; n <= 996; n += 294) {
+            for (int j = 1; j <= 25; j++) { //problems
+                for (int i = 1; i <= 5; i++) { //multiple choice
+                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
+                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
+                            if (grid[r][c] < 100) blackCount++;
                         }
-                        if (blackCount > biggestPrevValue) ans = count;
-                        biggestPrevValue = Math.max(blackCount, biggestPrevValue);
-                        blackCount = 0;
-                        count++;
-
                     }
-                    System.out.println(count2 + ": " + ans);
-                    if (ans == 1) answers[count2] = "A";
-                    if (ans == 2) answers[count2] = "B";
-                    if (ans == 3) answers[count2] = "C";
-                    if (ans == 4) answers[count2] = "D";
-                    if (ans == 5) answers[count2] = "E";
-                    biggestPrevValue = 0;
-                    count = 1;
-                    ans = -1;
-                    count2++;
-
+                    if (blackCount > biggestPrevValue) ans = count;
+                    biggestPrevValue = Math.max(blackCount, biggestPrevValue);
+                    blackCount = 0;
+                    count++;
                 }
+                if (ans == 1) answers.add("A");
+                if (ans == 2) answers.add("B");
+                if (ans == 3) answers.add("C");
+                if (ans == 4) answers.add("D");
+                if (ans == 5) answers.add("E");
+//                System.out.println((count2 + ": " + answers.get(count2 - 1)));
+                biggestPrevValue = 0;
+                count = 1;
+                ans = -1;
             }
         }
-        System.out.println(Arrays.toString(answers));
+
+
+        return answers;
+    }
+
+    public static ArrayList<String> getStudentArray(int page) {
+        short[][] grid;
+        ArrayList<String> answers = new ArrayList<>();
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", page);
+        DImage img = new DImage(in);
+        grid = img.getBWPixelGrid();
+        int count = 1;
+        int blackCount = 0;
+        int biggestPrevValue = 0;
+        int ans = -1;
+        int count2 = 1;
+
+        for (int n = 114; n <= 996; n += 294) {
+            for (int j = 1; j <= 25; j++) { //problems
+                for (int i = 1; i <= 5; i++) { //multiple choice
+                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
+                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
+                            if (grid[r][c] < 100) blackCount++;
+                        }
+                    }
+                    if (blackCount > biggestPrevValue) ans = count;
+                    biggestPrevValue = Math.max(blackCount, biggestPrevValue);
+                    blackCount = 0;
+                    count++;
+                }
+                if (ans == 1) answers.add("A");
+                if (ans == 2) answers.add("B");
+                if (ans == 3) answers.add("C");
+                if (ans == 4) answers.add("D");
+                if (ans == 5) answers.add("E");
+
+                biggestPrevValue = 0;
+                count = 1;
+                ans = -1;
+                count2++;
+            }
+        }
         return answers;
     }
 
 
+    public static ArrayList<String> crossCheck(ArrayList<String> key, ArrayList<String> student, int page) {
+        System.out.println(key.size());
+        System.out.println(student.size());
+        ArrayList<String> ans = new ArrayList<>();
+        key = getAnsArray();
+        student = getStudentArray(page);
+        for (int i = 0; i < key.size(); i++) {
+            if (student.get(i).equals(key.get(i))) ans.add("yes");
+            else ans.add("no");
+        }
+        return ans;
+    }
 
-    public static void writeDataToFile(String filePath, String[] answers) {
+    public static void writeDataToFile(String filePath, ArrayList<String> answers) {
 
         try (FileWriter f = new FileWriter(filePath);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
 
-            for (int i = 1; i <= 100; i++) {
-                writer.println((i) + ", " + answers[i]);
+            for (int i = 0; i < answers.size(); i++) {
+                writer.println((i + 1) + ": " + answers.get(i));
             }
+            writer.println();
 
 
         } catch (IOException error) {

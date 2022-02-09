@@ -16,7 +16,8 @@ public class FilterTest{
         SaveAndDisplayExample();
         RunTheFilter();
         OpticalMarkReaderMain.getAnsArray();
-        OpticalMarkReaderMain.writeDataToFile("src/MyFile.txt", OpticalMarkReaderMain.getAnsArray());
+
+//        OpticalMarkReaderMain.writeDataToFile("src/MyFile.txt", OpticalMarkReaderMain.crossCheck(OpticalMarkReaderMain.getAnsArray(),OpticalMarkReaderMain.getStudentArray()));
 
 
     }
