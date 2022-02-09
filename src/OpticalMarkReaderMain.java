@@ -32,7 +32,7 @@ public class OpticalMarkReaderMain {
         }
 
         for (int i = 0; i < answers.size(); i++) {
-            writeDataToFile("src/MyFile.txt",answers.get(i));
+            writeDataToFile("src/StudentAnswers.txt",answers.get(i));
         }
 
 
