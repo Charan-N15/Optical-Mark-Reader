@@ -97,7 +97,7 @@ public class OpticalMarkReaderMain {
     public static ArrayList<String> getStudentArray(int page) {
         short[][] grid;
         ArrayList<String> answers = new ArrayList<>();
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", page);
+        PImage in = PDFHelper.getPageImage("assets/omredit1.pdf",1);
         DImage img = new DImage(in);
         grid = img.getBWPixelGrid();
         int count = 1;
@@ -136,28 +136,44 @@ public class OpticalMarkReaderMain {
 
 
     public static ArrayList<String> crossCheck(ArrayList<String> key, ArrayList<String> student, int page) {
-        System.out.println(key.size());
-        System.out.println(student.size());
+
         ArrayList<String> ans = new ArrayList<>();
         key = getAnsArray();
         student = getStudentArray(page);
         for (int i = 0; i < key.size(); i++) {
             if (student.get(i).equals(key.get(i))) ans.add("yes");
             else ans.add("no");
+
+
         }
         return ans;
     }
 
+
     public static void writeDataToFile(String filePath, ArrayList<String> answers) {
+
 
         try (FileWriter f = new FileWriter(filePath, true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
+            int size = answers.size();
+            int numWrong = 0;
+
+
+            for (int i = 0; i < size; i++) {
+                if(answers.get(i).equals("no")) numWrong++;
+            }
+            int correct = size - numWrong;
+            writer.println("This student got " + correct + "/" + size );
+            writer.println();
 
             for (int i = 0; i < answers.size(); i++) {
                 writer.println((i + 1) + ": " + answers.get(i));
             }
             writer.println();
+
+
+
 
 
 

@@ -15,8 +15,8 @@ public class FilterTest{
     public static String currentFolder = System.getProperty("user.dir") + "/";
 
     public static void main(String[] args) {
-//        SaveAndDisplayExample();
-        RunTheFilter();
+        SaveAndDisplayExample();
+//        RunTheFilter();
 
 
 
@@ -43,9 +43,9 @@ public class FilterTest{
     }
 
     private static void SaveAndDisplayExample() {
-        PImage img = PDFHelper.getPageImage("assets/omrtest.pdf",1);
+        PImage img = PDFHelper.getPageImage("assets/omredit1.pdf",1);
         img.save(currentFolder + "assets/page1.png");
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",1);
+        PImage in = PDFHelper.getPageImage("assets/omredit1.pdf",1);
 
         DisplayWindow.showFor("assets/page1.png");
 
