@@ -34,6 +34,7 @@ public class OpticalMarkReaderMain {
         for (int i = 0; i < answers.size(); i++) {
             writeDataToFile("src/StudentAnswers.txt",answers.get(i));
         }
+        writeStudentResults("src/NumberofCorrectAnswers.txt",totalAnsArray(ArrayList<String> key, ArrayList<String> student));
 
 
 
@@ -178,20 +179,32 @@ public class OpticalMarkReaderMain {
         return totalAns;
     }
 
-
-
-    public static void writeStudentResults(String filepath, ArrayList<String> answers){
+    public static int correctPerQuestion(int a, ArrayList<String> totalAns){
+        int correctCount=0;
+        for (int i = a; i < totalAns.size(); i+=100) {
+                if(totalAns.get(i)=="yes"){
+                    correctCount++;
+                }
+            }
+        return correctCount;
+    }
+    public static void writeStudentResults(String filepath, ArrayList<String> totalAns){
         try (FileWriter f = new FileWriter(filepath, true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
+            //how many students got it correct for one answer(this becomes method of its own later)
+            //then repeat the code below for 100 answers
 
-            for (int j = 0; j < answers.size()/6; j++) {
-                    
+            //all this becomes one method, a is counter and will be looped from 0 to <100
+//            for (int i = a; i < totalAns.size(); i+=100) {
+//                if(totalAns.get(i)=="yes"){
+//                    correctCount++;
+//                }
+//            }
+//            return correctCount;
+            for (int i = 0; i < 100; i++) {
+                writer.println(i+". "+correctPerQuestion(i+1, totalAns));
             }
-
-            writer.println(answers);
-
-
         } catch (IOException error) {
             System.err.println("There was a problem writing to the file: " + filepath);
             error.printStackTrace();
