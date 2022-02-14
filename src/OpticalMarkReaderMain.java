@@ -134,6 +134,35 @@ public class OpticalMarkReaderMain {
         return answers;
     }
 
+    public static ArrayList<String> totalAnsArray(ArrayList<String> key, ArrayList<String> student){
+        ArrayList<String> totalAns = new ArrayList<>();
+        ArrayList<String> ans1 = crossCheck(key,student,1);
+        ArrayList<String> ans2 = crossCheck(key,student,2);
+        ArrayList<String> ans3 = crossCheck(key,student,3);
+        ArrayList<String> ans4 = crossCheck(key,student,4);
+        ArrayList<String> ans5 = crossCheck(key,student,5);
+        ArrayList<String> ans6 = crossCheck(key,student,6);
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans1.get(i));
+        }
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans2.get(i));
+        }
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans3.get(i));
+        }
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans4.get(i));
+        }
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans5.get(i));
+        }
+        for (int i = 0; i < ans1.size(); i++) {
+            totalAns.add(ans6.get(i));
+        }
+        return totalAns;
+    }
+
 
     public static ArrayList<String> crossCheck(ArrayList<String> key, ArrayList<String> student, int page) {
 
