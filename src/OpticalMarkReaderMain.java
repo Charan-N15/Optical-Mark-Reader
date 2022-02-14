@@ -150,6 +150,24 @@ public class OpticalMarkReaderMain {
     }
 
 
+    public static void writeStudentResults(String filepath, ArrayList<String> answers){
+        try (FileWriter f = new FileWriter(filepath, true);
+             BufferedWriter b = new BufferedWriter(f);
+             PrintWriter writer = new PrintWriter(b);) {
+
+            for (int j = 0; j < answers.size()/6; j++) {
+                    
+            }
+
+            writer.println(answers);
+
+
+        } catch (IOException error) {
+            System.err.println("There was a problem writing to the file: " + filepath);
+            error.printStackTrace();
+        }
+    }
+
     public static void writeDataToFile(String filePath, ArrayList<String> answers) {
 
 
