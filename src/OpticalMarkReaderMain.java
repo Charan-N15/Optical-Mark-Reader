@@ -22,7 +22,7 @@ public class OpticalMarkReaderMain {
         students.add(getStudentArray(3));
         students.add(getStudentArray(4));
         students.add(getStudentArray(5));
-        students.add(getStudentArray(6));
+
 
         int page = 2;
         ArrayList<ArrayList> answers = new ArrayList<>();
@@ -97,7 +97,7 @@ public class OpticalMarkReaderMain {
     public static ArrayList<String> getStudentArray(int page) {
         short[][] grid;
         ArrayList<String> answers = new ArrayList<>();
-        PImage in = PDFHelper.getPageImage("assets/omredit1.pdf",1);
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",page);
         DImage img = new DImage(in);
         grid = img.getBWPixelGrid();
         int count = 1;
