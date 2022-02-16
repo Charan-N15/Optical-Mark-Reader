@@ -12,41 +12,12 @@ public class OpticalMarkReaderMain {
 
     public static void main(String[] args) {
 
-//        String pathToPdf = fileChooser();
-//        System.out.println("Loading pdf at " + pathToPdf);
-//        Student s = new Student();
-
-//
-        ArrayList<ArrayList> students = new ArrayList<>();
-        students.add(getStudentArray(2));
-        students.add(getStudentArray(3));
-        students.add(getStudentArray(4));
-        students.add(getStudentArray(5));
-
-
-        int page = 2;
-        ArrayList<ArrayList> answers = new ArrayList<>();
-        for (int i = 0; i < students.size(); i++) {
-            answers.add(crossCheck(getAnsArray(),students.get(i),page));
-            page++;
-        }
-
+        ArrayList<ArrayList> answers = studentScoresContent();
         for (int i = 0; i < answers.size(); i++) {
-            writeDataToFile("src/StudentAnswers.txt",answers.get(i));
+            writeStudentScores("src/StudentAnswers.txt", answers.get(i));
         }
 
-
-
-
-
-
-        /*
-        Your code here to...
-        (1).  Load the pdf
-        (2).  Loop over its pages
-        (3).  Create a DImage from each page and process its pixels
-        (4).  Output 2 csv files
-         */
+        writeAnalysis("src/ItemAnalysis.txt");
     }
 
 
@@ -56,55 +27,25 @@ public class OpticalMarkReaderMain {
         PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
         DImage img = new DImage(in);
         grid = img.getBWPixelGrid();
-        int count = 1;
-        int blackCount = 0;
-        int biggestPrevValue = 0;
-        int ans = -1;
 
-        //rows start at 455 and end at 490
-        //columns start at 408 and end at 608
-        //dist between each choice is 38 pixels.
-        // rows now start at 456 and go to 493 (37 pixels).
-        for (int n = 114; n <= 996; n += 294) {
-            for (int j = 1; j <= 25; j++) { //problems
-                for (int i = 1; i <= 5; i++) { //multiple choice
-                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
-                            if (grid[r][c] < 100) blackCount++;
-                        }
-                    }
-                    if (blackCount > biggestPrevValue) ans = count;
-                    biggestPrevValue = Math.max(blackCount, biggestPrevValue);
-                    blackCount = 0;
-                    count++;
-                }
-                if (ans == 1) answers.add("A");
-                if (ans == 2) answers.add("B");
-                if (ans == 3) answers.add("C");
-                if (ans == 4) answers.add("D");
-                if (ans == 5) answers.add("E");
-//                System.out.println((count2 + ": " + answers.get(count2 - 1)));
-                biggestPrevValue = 0;
-                count = 1;
-                ans = -1;
-            }
-        }
-
-
-        return answers;
+        return loopOverOptions(grid, answers);
     }
 
     public static ArrayList<String> getStudentArray(int page) {
         short[][] grid;
         ArrayList<String> answers = new ArrayList<>();
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf",page);
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", page);
         DImage img = new DImage(in);
         grid = img.getBWPixelGrid();
+
+        return loopOverOptions(grid, answers);
+    }
+
+    public static ArrayList<String> loopOverOptions(short[][] grid, ArrayList<String> answers) {
         int count = 1;
         int blackCount = 0;
         int biggestPrevValue = 0;
         int ans = -1;
-        int count2 = 1;
 
         for (int n = 114; n <= 996; n += 294) {
             for (int j = 1; j <= 25; j++) { //problems
@@ -118,49 +59,60 @@ public class OpticalMarkReaderMain {
                     biggestPrevValue = Math.max(blackCount, biggestPrevValue);
                     blackCount = 0;
                     count++;
+
                 }
-                if (ans == 1) answers.add("A");
-                if (ans == 2) answers.add("B");
-                if (ans == 3) answers.add("C");
-                if (ans == 4) answers.add("D");
-                if (ans == 5) answers.add("E");
+                if (biggestPrevValue >= 50) {
+                    answers.add(numberToString(ans));
+                } else answers.add("No answer");
 
                 biggestPrevValue = 0;
                 count = 1;
                 ans = -1;
-                count2++;
             }
         }
         return answers;
     }
 
-    public static ArrayList<String> totalAnsArray(ArrayList<String> key, ArrayList<String> student){
-        ArrayList<String> totalAns = new ArrayList<>();
-        ArrayList<String> ans1 = crossCheck(key,student,1);
-        ArrayList<String> ans2 = crossCheck(key,student,2);
-        ArrayList<String> ans3 = crossCheck(key,student,3);
-        ArrayList<String> ans4 = crossCheck(key,student,4);
-        ArrayList<String> ans5 = crossCheck(key,student,5);
-        ArrayList<String> ans6 = crossCheck(key,student,6);
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans1.get(i));
+    public static String numberToString(int ans) {
+        switch (ans) {
+            case 1:
+                return "A";
+            case 2:
+                return "B";
+            case 3:
+                return "C";
+            case 4:
+                return "D";
+            default:
+                return "E";
+
         }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans2.get(i));
+
+    }
+
+    public static ArrayList<Integer> getStudentID(int page) {
+        short[][] grid;
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", page);
+        DImage img = new DImage(in);
+        grid = img.getBWPixelGrid();
+
+        int blackCount = 0;
+        int biggestPrevValue = 0;
+        ArrayList<Integer> studentID = new ArrayList<>();
+        for (int i = 1; i <= 9; i++) {
+            for (int j = 1; j <= 4; j++) {
+                for (int r = 331 + ((j - 1) * 22); r <= 331 + (j * 22); r++) {
+                    for (int c = 66 + ((i - 1) * 54); c <= 66 + (i * 54); c++) {
+                        if (grid[r][c] < 100) blackCount++;
+                    }
+                }
+                biggestPrevValue = Math.max(blackCount, biggestPrevValue);
+                blackCount = 0;
+            }
+            if (biggestPrevValue > 60) studentID.add(i - 1);
+            biggestPrevValue = 0;
         }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans3.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans4.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans5.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans6.get(i));
-        }
-        return totalAns;
+        return studentID;
     }
 
 
@@ -172,76 +124,75 @@ public class OpticalMarkReaderMain {
         for (int i = 0; i < key.size(); i++) {
             if (student.get(i).equals(key.get(i))) ans.add("yes");
             else ans.add("no");
-
-
         }
         return ans;
     }
 
-    public static ArrayList<String> totalAnsArray(ArrayList<String> key, ArrayList<String> student){
+    public static ArrayList<String> totalAnsArray() {
         ArrayList<String> totalAns = new ArrayList<>();
-        ArrayList<String> ans1 = crossCheck(key,student,1);
-        ArrayList<String> ans2 = crossCheck(key,student,2);
-        ArrayList<String> ans3 = crossCheck(key,student,3);
-        ArrayList<String> ans4 = crossCheck(key,student,4);
-        ArrayList<String> ans5 = crossCheck(key,student,5);
-        ArrayList<String> ans6 = crossCheck(key,student,6);
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans1.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans2.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans3.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans4.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans5.get(i));
-        }
-        for (int i = 0; i < ans1.size(); i++) {
-            totalAns.add(ans6.get(i));
-        }
+        ArrayList<String> key = getAnsArray();
+        ArrayList<String> ans1 = crossCheck(key, getStudentArray(1), 1);
+        ArrayList<String> ans2 = crossCheck(key, getStudentArray(2), 2);
+        ArrayList<String> ans3 = crossCheck(key, getStudentArray(3), 3);
+        ArrayList<String> ans4 = crossCheck(key, getStudentArray(4), 4);
+        ArrayList<String> ans5 = crossCheck(key, getStudentArray(5), 5);
+        ArrayList<String> ans6 = crossCheck(key, getStudentArray(6), 6);
+
+        return addToTotalAnswerArray(ans1, ans2, ans3, ans4, ans5, ans6, totalAns);
+    }
+
+    public static ArrayList<String> addToTotalAnswerArray(ArrayList<String> ans1, ArrayList<String> ans2, ArrayList<String> ans3,
+                                                          ArrayList<String> ans4, ArrayList<String> ans5, ArrayList<String> ans6,
+                                                          ArrayList<String> totalAns) {
+        totalAns.addAll(ans1);
+        totalAns.addAll(ans2);
+        totalAns.addAll(ans3);
+        totalAns.addAll(ans4);
+        totalAns.addAll(ans5);
+        totalAns.addAll(ans6);
         return totalAns;
     }
 
 
-
-    public static void writeStudentResults(String filepath, ArrayList<String> answers){
-        try (FileWriter f = new FileWriter(filepath, true);
-             BufferedWriter b = new BufferedWriter(f);
-             PrintWriter writer = new PrintWriter(b);) {
-
-            for (int j = 0; j < answers.size()/6; j++) {
-                    
+    public static int wrongPerQuestion(int a, ArrayList<String> totalAns) {
+        int incorrectCount = 0;
+        for (int i = a; i < totalAns.size(); i += 100) {
+            if (totalAns.get(i).equals("no")) {
+                incorrectCount++;
             }
-
-            writer.println(answers);
-
-
-        } catch (IOException error) {
-            System.err.println("There was a problem writing to the file: " + filepath);
-            error.printStackTrace();
         }
+        return incorrectCount;
     }
 
-    public static void writeDataToFile(String filePath, ArrayList<String> answers) {
+    public static ArrayList<ArrayList> studentScoresContent() {
+        ArrayList<ArrayList> students = new ArrayList<>();
+        students.add(getStudentArray(2));
+        students.add(getStudentArray(3));
+        students.add(getStudentArray(4));
+        students.add(getStudentArray(5));
+        students.add(getStudentArray(6));
+        int page = 2;
+        ArrayList<ArrayList> answers = new ArrayList<>();
+        for (int i = 0; i < students.size(); i++) {
+            answers.add(crossCheck(getAnsArray(), students.get(i), page));
+            page++;
+        }
+        return answers;
+    }
 
-
+    public static void writeStudentScores(String filePath, ArrayList<String> answers) {
         try (FileWriter f = new FileWriter(filePath, true);
              BufferedWriter b = new BufferedWriter(f);
-             PrintWriter writer = new PrintWriter(b);) {
+             PrintWriter writer = new PrintWriter(b)) {
             int size = answers.size();
             int numWrong = 0;
-
+            ArrayList<Integer> studentID = getStudentID(1);
 
             for (int i = 0; i < size; i++) {
-                if(answers.get(i).equals("no")) numWrong++;
+                if (answers.get(i).equals("no")) numWrong++;
             }
             int correct = size - numWrong;
-            writer.println("This student got " + correct + "/" + size );
+            writer.println(studentID.toString() + " got " + correct + "/" + size);
             writer.println();
 
             for (int i = 0; i < answers.size(); i++) {
@@ -249,39 +200,24 @@ public class OpticalMarkReaderMain {
             }
             writer.println();
 
-
-
-
-
-
         } catch (IOException error) {
             System.err.println("There was a problem writing to the file: " + filePath);
             error.printStackTrace();
         }
     }
 
-    public static void writeDataToFile1(String filePath, String data) {
-        try (FileWriter f = new FileWriter(filePath);
+    public static void writeAnalysis(String filepath) {
+        ArrayList<String> totalAns = totalAnsArray();
+        try (FileWriter f = new FileWriter(filepath, true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
 
-
-            writer.println(data);
-
-
+            for (int i = 1; i <= 100; i++) {
+                writer.println((i) + ". " + wrongPerQuestion(i - 1, totalAns));
+            }
         } catch (IOException error) {
-            System.err.println("There was a problem writing to the file: " + filePath);
+            System.err.println("There was a problem writing to the file: " + filepath);
             error.printStackTrace();
         }
-    }
-
-
-    private static String fileChooser() {
-        String userDirLocation = System.getProperty("user.dir");
-        File userDir = new File(userDirLocation);
-        JFileChooser fc = new JFileChooser(userDir);
-        int returnVal = fc.showOpenDialog(null);
-        File file = fc.getSelectedFile();
-        return file.getAbsolutePath();
     }
 }
