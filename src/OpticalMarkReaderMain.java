@@ -16,15 +16,17 @@ public class OpticalMarkReaderMain {
         for (int i = 0; i < answers.size(); i++) {
             writeStudentScores("src/StudentAnswers.txt", answers.get(i));
         }
-
         writeAnalysis("src/ItemAnalysis.txt");
+
+
+
     }
 
 
     public static ArrayList<String> getAnsArray() {
         short[][] grid;
         ArrayList<String> answers = new ArrayList<>();
-        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 1);
+        PImage in = PDFHelper.getPageImage("assets/omrtest.pdf", 0);
         DImage img = new DImage(in);
         grid = img.getBWPixelGrid();
 
@@ -47,11 +49,11 @@ public class OpticalMarkReaderMain {
         int biggestPrevValue = 0;
         int ans = -1;
 
-        for (int n = 114; n <= 996; n += 294) {
-            for (int j = 1; j <= 25; j++) { //problems
+        for (int n = 125; n <= 980; n += 285) { //column of problems
+            for (int j = 1 ; j <= 25; j++) { //problems
                 for (int i = 1; i <= 5; i++) { //multiple choice
-                    for (int r = 456 + ((j - 1) * 37); r < 456 + (j * 37); r++) {
-                        for (int c = n + ((i - 1) * 38); c < n + (i * 38); c++) {
+                    for (int r = 458 + ((j - 1) * 37); r < 458 + (j * 37); r++) {
+                        for (int c = 125 + ((i - 1) * 38); c < 125 + (i * 38); c++) {
                             if (grid[r][c] < 100) blackCount++;
                         }
                     }
@@ -85,7 +87,6 @@ public class OpticalMarkReaderMain {
                 return "D";
             default:
                 return "E";
-
         }
 
     }
@@ -166,12 +167,13 @@ public class OpticalMarkReaderMain {
 
     public static ArrayList<ArrayList> studentScoresContent() {
         ArrayList<ArrayList> students = new ArrayList<>();
+        students.add(getStudentArray(1));
         students.add(getStudentArray(2));
         students.add(getStudentArray(3));
         students.add(getStudentArray(4));
         students.add(getStudentArray(5));
         students.add(getStudentArray(6));
-        int page = 2;
+        int page = 1;
         ArrayList<ArrayList> answers = new ArrayList<>();
         for (int i = 0; i < students.size(); i++) {
             answers.add(crossCheck(getAnsArray(), students.get(i), page));
@@ -181,7 +183,7 @@ public class OpticalMarkReaderMain {
     }
 
     public static void writeStudentScores(String filePath, ArrayList<String> answers) {
-        try (FileWriter f = new FileWriter(filePath, true);
+        try (FileWriter f = new FileWriter(filePath,true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b)) {
             int size = answers.size();
@@ -208,7 +210,7 @@ public class OpticalMarkReaderMain {
 
     public static void writeAnalysis(String filepath) {
         ArrayList<String> totalAns = totalAnsArray();
-        try (FileWriter f = new FileWriter(filepath, true);
+        try (FileWriter f = new FileWriter(filepath,true);
              BufferedWriter b = new BufferedWriter(f);
              PrintWriter writer = new PrintWriter(b);) {
 
